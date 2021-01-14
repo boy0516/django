@@ -32,3 +32,17 @@ class Post(models.Model):
         self.published_date = timezone.now()
         self.save()
 
+# Post에 달린 댓글
+class Comment(models.Model):
+    post = models.ForeignKey('blog.Post', on_delete=models.CASCADE, related_name='comments')
+    author = models.CharField(max_length=100)
+    text = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+    approved_comment = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.text
+
+    def approve(self):
+        self.approved_comment = True
+        self.save()
